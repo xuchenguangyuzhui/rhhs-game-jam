@@ -93,3 +93,11 @@ final result: passed
 - All 10 gameplay tests, both deployment-path tests, and all 4 Sites packaging/Worker tests passed. The production build completed successfully and preserved the required Worker packaging files.
 - GitHub Actions builds and validates pushes to `main` before deploying only the static client to GitHub Pages. No secrets or server files are included in the published artifact.
 - Physical keyboard rollover, perceived audio quality, and manual testing on other operating systems remain unverified.
+
+## Windowed score and timer fix
+
+- Reproduced the issue at 1280 x 600: the game shell narrowed to 633.5px while the header kept desktop-sized text. P1's score extended into the timer by about 30px.
+- Header text, player badges, and score spacing now scale to the game-shell container width. Symmetric columns reserve a wider center for the timer. Very small game containers stack the player badge above its score, and the menu's longer round caption can wrap.
+- Browser geometry checks found no overlap between header groups during play at 1920 x 1080, 1440 x 900, 1366 x 768, 1280 x 800, 1280 x 600, 1280 x 500, 1024 x 600, 935 x 604, 800 x 500, 760 x 600, and 520 x 600. The menu header also passed at 1920 x 1080, 1280 x 600, 1280 x 500, 935 x 604, and 520 x 600.
+- Checked the fullscreen / exit-fullscreen controls and pause / return-to-menu flow. All 16 existing gameplay, packaging, and deployment-path tests and the production build passed. These geometry checks cover the header, not a full-page layout audit.
+- Other browser engines, operating systems, physical keyboard rollover, and perceived audio quality were not retested for this CSS change.

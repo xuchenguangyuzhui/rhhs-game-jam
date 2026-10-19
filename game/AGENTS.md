@@ -10,6 +10,7 @@
 - Small stars award 1 point and the center gold star awards 3. Gold visuals and feedback depend on the pickup type, not on its score value.
 - Keep tutorial step labels 01/02/03 and explicitly explain Shift (P1) and Enter (P2) dash controls. Dialogs must cover the footer, stay inside the viewport, and scroll internally when needed; hide the footer slogan while a dialog is open.
 - Prioritize clear movement, dash, collection, collision, rewind transitions, and quick rematches. Respect reduced motion and mute settings.
+- The score and timer must never overlap in windowed play. Scale the header to the actual game-shell width, including short desktop windows, and keep the timer centered with a separate score area on each side.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 
