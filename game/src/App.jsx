@@ -15,7 +15,7 @@ import {
 } from "@phosphor-icons/react";
 import "@fontsource/kalam/400.css";
 import "@fontsource/kalam/700.css";
-import { EchoGame, referenceScene } from "./game/engine.mjs";
+import { EchoGame, referenceScene, WORLD, MATCH_SECONDS } from "./game/engine.mjs";
 import { GameRenderer, loadAssets } from "./game/renderer.mjs";
 import { GameAudio } from "./game/audio.mjs";
 
@@ -455,14 +455,14 @@ export function App() {
             className={`clock ${snapshot.remaining <= 10 && mode === "playing" ? "urgent" : ""}`}
           >
             <strong
-              aria-label={`${mode === "menu" ? 60 : snapshot.remaining} seconds remaining`}
+              aria-label={`${mode === "menu" ? MATCH_SECONDS : snapshot.remaining} seconds remaining`}
             >
-              {mode === "menu" ? "01:00" : formatTime(snapshot.remaining)}
+              {formatTime(mode === "menu" ? MATCH_SECONDS : snapshot.remaining)}
             </strong>
             <span>
               {mode === "menu"
-                ? "THREE ROUNDS. ONE RIVALRY."
-                : `ROUND ${snapshot.round} / 3`}
+                ? `${WORLD.rounds} ROUNDS. ONE RIVALRY.`
+                : `ROUND ${snapshot.round} / ${WORLD.rounds}`}
             </span>
           </div>
           <div
@@ -550,7 +550,7 @@ export function App() {
                 </p>
                 <button className="brush-button" onClick={start}>
                   <PlayIcon weight="fill" size={25} /> Play together{" "}
-                  <span className="button-tail">60s</span>
+                  <span className="button-tail">{MATCH_SECONDS}s</span>
                 </button>
                 <button
                   className="text-button menu-help"
@@ -664,15 +664,18 @@ export function App() {
                 worst obstacle.
               </h2>
               <p>
-                Collect more stars than your rival in 60 seconds.
+                Collect more stars than your rival in {MATCH_SECONDS} seconds.
                 <br />
-                Every 20 seconds, your old moves come back as echoes.
+                Every {WORLD.roundSeconds} seconds, your old moves come back as
+                echoes.
               </p>
               <div className="how-rounds">
                 <div>
                   <b>01</b>
                   <span>Make your moves.</span>
-                  <small>Just you, your rival, and the stars.</small>
+                  <small>
+                    First {WORLD.roundSeconds}s: just you, your rival, and the stars.
+                  </small>
                 </div>
                 <div>
                   <b>02</b>
@@ -680,9 +683,11 @@ export function App() {
                   <small>Two echoes replay your first round.</small>
                 </div>
                 <div>
-                  <b>03</b>
+                  <b>3–{WORLD.rounds}</b>
                   <span>Embrace the chaos.</span>
-                  <small>Four echoes. No room for regrets.</small>
+                  <small>
+                    Up to {(WORLD.rounds - 1) * 2} echoes. No room for regrets.
+                  </small>
                 </div>
               </div>
               <div className="rules-note">

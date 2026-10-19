@@ -4,7 +4,7 @@
 
 - Use the selected notebook-paper / blue-and-pink highlighter visual direction. The game name is **ECHO WAR**.
 - This is a browser game for two local players sharing one keyboard, not online multiplayer.
-- Keep a single arena, 60-second matches, three 20-second rounds, and recorded movement echoes from prior rounds.
+- Keep a single arena and 60-second matches with five 12-second rounds. Add two recorded movement echoes at 12, 24, 36, and 48 seconds, keeping earlier echoes for a maximum of eight. End the match at 60 seconds without adding another pair.
 - Live players are solid blue/pink; replay echoes are pale hollow versions. All interface text is English.
 - Prioritize clear movement, dash, collection, collision, rewind transitions, and quick rematches. Respect reduced motion and mute settings.
 

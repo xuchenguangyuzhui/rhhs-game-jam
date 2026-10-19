@@ -1,9 +1,11 @@
+export const MATCH_SECONDS = 60;
+const ROUND_SECONDS = 12;
 export const WORLD = {
   width: 1400,
   height: 800,
   radius: 21,
-  roundSeconds: 20,
-  rounds: 3,
+  roundSeconds: ROUND_SECONDS,
+  rounds: MATCH_SECONDS / ROUND_SECONDS,
 };
 export const COLORS = ["#0874ed", "#ec2389"];
 export const BLOCKS = [
@@ -203,7 +205,7 @@ export class EchoGame {
     this.events = [];
     if (this.status !== "playing" || dt <= 0) return this.events;
     dt = Math.min(dt, 1 / 30);
-    this.elapsed = Math.min(60, this.elapsed + dt);
+    this.elapsed = Math.min(MATCH_SECONDS, this.elapsed + dt);
     this.roundElapsed += dt;
     this.tickCount += 1;
     this.players.forEach((p, i) => {
@@ -300,11 +302,11 @@ export class EchoGame {
       }
     }
     this.recordFrame();
-    if (this.elapsed >= 60 - 0.000001) {
-      this.elapsed = 60;
+    if (this.elapsed >= MATCH_SECONDS - 0.000001) {
+      this.elapsed = MATCH_SECONDS;
       this.status = "finished";
       this.events.push({ type: "finish", winner: this.winner });
-    } else if (this.roundElapsed >= 20 - 0.000001) this.beginRound();
+    } else if (this.roundElapsed >= WORLD.roundSeconds - 0.000001) this.beginRound();
     return this.events;
   }
   get winner() {
@@ -319,8 +321,8 @@ export class EchoGame {
       status: this.status,
       round: this.round,
       elapsed: this.elapsed,
-      remaining: Math.max(0, Math.ceil(60 - this.elapsed)),
-      roundRemaining: Math.max(0, 20 - this.roundElapsed),
+      remaining: Math.max(0, Math.ceil(MATCH_SECONDS - this.elapsed)),
+      roundRemaining: Math.max(0, WORLD.roundSeconds - this.roundElapsed),
       echoes: this.echoTracks.length,
       players: this.players.map((p) => ({ ...p })),
     };
@@ -330,8 +332,8 @@ export class EchoGame {
 export function referenceScene() {
   const game = new EchoGame();
   game.round = 3;
-  game.elapsed = 48;
   game.roundElapsed = 8;
+  game.elapsed = (game.round - 1) * WORLD.roundSeconds + game.roundElapsed;
   Object.assign(game.players[0], {
     x: 405,
     y: 260,

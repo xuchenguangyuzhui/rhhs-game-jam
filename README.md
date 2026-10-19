@@ -9,7 +9,7 @@ A two-player, one-keyboard arena game. Steal the stars, dodge your echoes, and t
 - **Pause:** Escape or the pause button. The match also pauses when the window loses focus.
 - **Sound:** toggle the speaker button. Reduced-motion effects can be selected in the pause menu and follow your system preference on first launch.
 
-A match has **three 20-second rounds**. Each new round adds recorded echoes of both players' previous routes. Echoes replay movement; they do not chase players or collect stars. Live players are solid blue/pink, while echoes have pale hollow outlines.
+A match has **five 12-second rounds**. At **12, 24, 36, and 48 seconds**, a new pair of recorded echoes joins the arena. Earlier echoes stay in play, so the final round has **8 echoes**. The match ends at 60 seconds without adding another pair. Echoes replay movement; they do not chase players or collect stars. Live players are solid blue/pink, while echoes have pale hollow outlines.
 
 Small stars award **1 point**; the central gold star awards **5**. Hitting any echo, including your own, costs **1 point** (never below zero) and stuns you for half a second. A brief immunity window prevents repeated hits. Dashes pass safely through echoes and recharge in **2.6 seconds**. Scores carry across rounds, and the higher score after 60 seconds wins. Both players return to their spawn points at each rewind.
 

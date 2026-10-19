@@ -1,5 +1,7 @@
 # ECHO WAR design QA
 
+The original full visual comparison below records the first, three-round release. The current balance uses five 12-second rounds; see the subsequent timing verification section. Earlier screenshots are retained as historical design evidence, not as the current rules.
+
 ## Comparison setup
 
 - Source: `docs/visual-target.png`, the selected first concept renamed ECHO WAR.
@@ -57,6 +59,15 @@ The final full and focused comparisons were opened together after these fixes. N
 - The app is running locally. No hosted deployment has been claimed.
 
 ## Completed checklist
+
+### 12-second balance update
+
+- Current rules: five 12-second rounds within the same 60-second match. Add two echoes at 12, 24, 36 and 48 seconds, retaining earlier generations, for eight echoes in round 5. No further echoes are added at 60 seconds.
+- Timing and round-count values now drive both the engine and interface. The menu, HUD, tutorial, README and project guidelines agree on the new timing. The original visual-reference fixture uses a consistent elapsed time for its round under the new rules.
+- All 10 gameplay tests passed, including checks immediately before/at the first 12-second boundary, every later boundary, retained earlier tracks, exactly eight echoes, no rewind at match end, and reset after reaching the final round. Recorded-path replay still matches captured movement with 12-second tracks.
+- Production build passed. Worker behavior and art/layout were not changed; the baseline packaging tests were not repeated for this balance-only change.
+- Browser: tutorial states every 12 seconds and up to 8 echoes, and fits a 1280 x 800 window. A complete match reached ROUND 4 / 5 with 6 echoes at 00:24, then finished at ROUND 5 / 5, 00:00 with 8 echoes retained in the rendered state. Console errors/warnings: none observed.
+- Current timing screenshot: `docs/timing-12s.jpg`. The preview was returned to the menu for a fresh match. No new two-person hardware or cross-browser testing was performed for this change.
 
 - [x] Resolved P2 layout and arena differences and re-captured post-fix evidence.
 - [x] Compared full views and focused typography, controls, and image regions.

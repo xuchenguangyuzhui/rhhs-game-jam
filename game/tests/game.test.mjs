@@ -19,22 +19,40 @@ const noStars = (game) =>
     star.readyAt = 1000;
   });
 
-test("a match is exactly three twenty-second rounds and then freezes", () => {
+test("echoes arrive at 12, 24, 36 and 48 seconds, then the match ends at 60", () => {
   const game = new EchoGame();
   game.players[0].score = 7;
-  advance(game, 20);
+  advance(game, 12 - 1 / 60);
+  assert.equal(game.round, 1);
+  assert.equal(game.echoTracks.length, 0);
+  assert.ok(game.snapshot().roundRemaining > 0);
+  const firstRewind = game.step(1 / 60);
+  assert.equal(firstRewind.filter((e) => e.type === "rewind").length, 1);
   assert.equal(game.round, 2);
   assert.equal(game.echoTracks.length, 2);
   assert.equal(game.players[0].score, 7);
   assert.equal(game.players[0].x, 180);
   assert.equal(game.players[0].invulnerable, 1.2);
-  advance(game, 20);
-  assert.equal(game.round, 3);
-  assert.equal(game.echoTracks.length, 4);
-  const events = advance(game, 20);
+  assert.equal(game.snapshot().roundRemaining, 12);
+  const firstTrack = game.echoTracks[0].track;
+  for (const round of [3, 4, 5]) {
+    const events = advance(game, 12);
+    assert.equal(events.filter((e) => e.type === "rewind").length, 1);
+    assert.equal(game.round, round);
+    assert.equal(game.echoTracks.length, (round - 1) * 2);
+    assert.equal(game.echoTracks[0].track, firstTrack);
+    assert.ok(Math.abs(game.elapsed - (round - 1) * 12) < 0.000001);
+  }
+  assert.deepEqual(
+    game.echoTracks.map((echo) => echo.generation),
+    [1, 1, 2, 2, 3, 3, 4, 4],
+  );
+  const events = advance(game, 12);
   assert.equal(game.elapsed, 60);
   assert.equal(game.status, "finished");
-  assert.equal(game.round, 3);
+  assert.equal(game.round, 5);
+  assert.equal(game.echoTracks.length, 8);
+  assert.equal(events.filter((e) => e.type === "rewind").length, 0);
   assert.equal(events.filter((e) => e.type === "finish").length, 1);
   const snapshot = game.snapshot();
   advance(game, 10, [{ x: 1, dash: true }, { y: 1 }]);
@@ -109,7 +127,7 @@ test("echoes replay captured movement rather than chase players or collect stars
   noStars(game);
   advance(game, 2, [{ x: 1 }, {}]);
   const point = { x: game.players[0].x, y: game.players[0].y };
-  advance(game, 18);
+  advance(game, 10);
   assert.equal(game.echoTracks.length, 2);
   advance(game, 2, [{ y: -1 }, { y: 1 }]);
   const echo = game.getEchoes()[0];
@@ -177,7 +195,7 @@ test("recorded positions interpolate correctly and clamp at both ends", () => {
 
 test("restarting clears scores, echoes, cooldowns, and match progress", () => {
   const game = new EchoGame();
-  advance(game, 45, [{ x: 1, dash: true }, { y: 1 }]);
+  advance(game, 49, [{ x: 1, dash: true }, { y: 1 }]);
   game.reset();
   assert.equal(game.round, 1);
   assert.equal(game.elapsed, 0);
