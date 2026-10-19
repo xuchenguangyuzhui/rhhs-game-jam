@@ -11,6 +11,8 @@
 - Keep tutorial step labels 01/02/03 and explicitly explain Shift (P1) and Enter (P2) dash controls. Dialogs must cover the footer, stay inside the viewport, and scroll internally when needed; hide the footer slogan while a dialog is open.
 - Prioritize clear movement, dash, collection, collision, rewind transitions, and quick rematches. Respect reduced motion and mute settings.
 - The score and timer must never overlap in windowed play. Scale the header to the actual game-shell width, including short desktop windows, and keep the timer centered with a separate score area on each side.
+- Keep the footer slogan and both players' keyboard instructions separate in windowed play. Size the entire footer by game-shell width, and move the slogan onto its own centered row when space is limited.
+- Menu content must fit inside the arena in short windows; scale it by game-shell width and contain any remaining vertical overflow so it cannot cover the header or footer.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 

@@ -101,3 +101,11 @@ final result: passed
 - Browser geometry checks found no overlap between header groups during play at 1920 x 1080, 1440 x 900, 1366 x 768, 1280 x 800, 1280 x 600, 1280 x 500, 1024 x 600, 935 x 604, 800 x 500, 760 x 600, and 520 x 600. The menu header also passed at 1920 x 1080, 1280 x 600, 1280 x 500, 935 x 604, and 520 x 600.
 - Checked the fullscreen / exit-fullscreen controls and pause / return-to-menu flow. All 16 existing gameplay, packaging, and deployment-path tests and the production build passed. These geometry checks cover the header, not a full-page layout audit.
 - Other browser engines, operating systems, physical keyboard rollover, and perceived audio quality were not retested for this CSS change.
+
+## Windowed footer and menu containment
+
+- Reproduced the crowded footer at 1280 x 600. Fixed-size keyboard instructions extended beyond the narrow game shell. The menu also extended beyond the arena and covered the footer in windowed mode.
+- Keyboard keys, player labels, spacing, and the footer slogan now scale with game-shell width. At widths up to 560px the slogan gets its own centered row below the two players' instructions. Optional control captions are hidden when the shell lacks room.
+- Menu typography and spacing also follow game-shell width. The menu stays within the arena; very short windows scroll the menu internally. At 1280 x 430, the help control remained accessible with about 15px of internal scrolling, and its dialog still hid the footer slogan.
+- Browser checks passed in both menu and playing states at 1920 x 1080, 1920 x 900, 1440 x 900, 1366 x 768, 1280 x 800, 1280 x 600, 1280 x 500, 1280 x 430, 1024 x 600, 935 x 604, 800 x 500, 760 x 600, 600 x 500, 520 x 600, 400 x 600, and 320 x 600. Checked header separation, footer text and key separation, horizontal footer overflow, and menu containment. All checks passed.
+- Fullscreen / exit-fullscreen, the tutorial dialog, and returning to the menu were checked. All 16 gameplay, packaging, and deployment-path tests and the production build passed. Other browser engines and operating systems were not retested.
