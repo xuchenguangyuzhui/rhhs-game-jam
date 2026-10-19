@@ -8,6 +8,7 @@
     "build": "vite build && node scripts/prepare-sites-build.mjs",
     "preview": "vite preview",
     "test:sites": "node --test tests/sites-worker.test.mjs",
+    "test:deployment": "node --test tests/deployment.test.mjs",
     "test": "node --test tests/game.test.mjs"
   },
   "dependencies": {

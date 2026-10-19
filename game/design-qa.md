@@ -56,7 +56,7 @@ The final full and focused comparisons were opened together after these fixes. N
 - [P3] Generated pencil borders and block hatching are somewhat more regular than the concept; footer player labels use plain colored lettering. These are cohesive stylistic variations, not functional blockers.
 - Actual simultaneous-key hardware rollover and the audible sound mix need two-human testing on the competition laptop. Automated inputs establish browser handling, not physical keyboard limitations or perceived sound quality.
 - Narrow layout is inspectable; this first version requires a keyboard and does not provide touch/gamepad controls. Cross-browser and multi-device manual regression was not performed.
-- The app is running locally. No hosted deployment has been claimed.
+- The initial version was verified locally. See the desktop publishing update below for current distribution.
 
 ## Completed checklist
 
@@ -85,3 +85,11 @@ The final full and focused comparisons were opened together after these fixes. N
 - Two-person keyboard rollover, perceived audio quality, and cross-browser manual regression were not retested.
 
 final result: passed
+
+## Desktop publishing update
+
+- Target: current desktop browsers on computers with a keyboard; two players share one device. No touch controls were added.
+- Production asset URLs are relative. Automated checks resolve the emitted HTML, CSS artwork, and font references at both `/` and `/rhhs-game-jam/`, and confirm each referenced file exists in the build.
+- All 10 gameplay tests, both deployment-path tests, and all 4 Sites packaging/Worker tests passed. The production build completed successfully and preserved the required Worker packaging files.
+- GitHub Actions builds and validates pushes to `main` before deploying only the static client to GitHub Pages. No secrets or server files are included in the published artifact.
+- Physical keyboard rollover, perceived audio quality, and manual testing on other operating systems remain unverified.

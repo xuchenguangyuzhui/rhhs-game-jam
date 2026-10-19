@@ -4,6 +4,10 @@ A two-player, one-keyboard arena game. Steal the stars, dodge your echoes, and t
 
 ## Play
 
+**[Play ECHO WAR in your browser](https://xuchenguangyuzhui.github.io/rhhs-game-jam/)**
+
+Open the link on a Windows, macOS, Linux, or Chromebook computer with a current desktop browser and a keyboard. No installation, Node.js, or account is needed to play. Both players share the same computer and keyboard; this is local multiplayer. An internet connection is needed to load the game.
+
 - **Player 1:** WASD to move, Shift to dash.
 - **Player 2:** arrow keys to move, Enter to dash.
 - **Pause:** Escape or the pause button. The match also pauses when the window loses focus.
@@ -24,9 +28,16 @@ pnpm dev --host 127.0.0.1 --port 4173
 pnpm test
 pnpm build
 pnpm test:sites
+pnpm test:deployment
 ```
 
-The build emits static files in `game/dist/client` and retains the template's Sites-compatible Worker. The first version is a local playable preview; GitHub Pages deployment is not configured yet.
+The build emits static files in `game/dist/client` and retains the template's Sites-compatible Worker. Relative asset URLs allow the same build to work at a root domain or a project subdirectory.
+
+## Publishing
+
+GitHub Pages publishes `game/dist/client` through [the deployment workflow](.github/workflows/deploy-pages.yml). Every push to `main` runs gameplay tests, the production build, Sites packaging checks, and deployment-path checks before publishing. The workflow can also be started manually from GitHub Actions. Repository Pages settings use **GitHub Actions** as the publishing source.
+
+The public game remains available when the development computer and local server are off. Future changes become live after their workflow succeeds. Browser and keyboard restrictions imposed by a school or workplace may still affect access or simultaneous key presses.
 
 ## Validation and limits
 

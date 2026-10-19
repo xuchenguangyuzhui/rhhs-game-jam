@@ -6,6 +6,7 @@
 - This is a browser game for two local players sharing one keyboard, not online multiplayer.
 - Keep a single arena and 60-second matches with five 12-second rounds. Add two recorded movement echoes at 12, 24, 36, and 48 seconds, keeping earlier echoes for a maximum of eight. End the match at 60 seconds without adding another pair.
 - Live players are solid blue/pink; replay echoes are pale hollow versions. All interface text is English.
+- Distribution targets desktop browsers with a keyboard. Publish through the repository's GitHub Pages workflow and keep asset URLs portable under its project path. Touch and gamepad controls are outside the requested scope.
 - Small stars award 1 point and the center gold star awards 3. Gold visuals and feedback depend on the pickup type, not on its score value.
 - Keep tutorial step labels 01/02/03 and explicitly explain Shift (P1) and Enter (P2) dash controls. Dialogs must cover the footer, stay inside the viewport, and scroll internally when needed; hide the footer slogan while a dialog is open.
 - Prioritize clear movement, dash, collection, collision, rewind transitions, and quick rematches. Respect reduced motion and mute settings.
