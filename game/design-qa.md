@@ -1,6 +1,6 @@
 # ECHO WAR design QA
 
-The original full visual comparison below records the first, three-round release. The current balance uses five 12-second rounds; see the subsequent timing verification section. Earlier screenshots are retained as historical design evidence, not as the current rules.
+The original full visual comparison below records the first, three-round release. The current balance uses five 12-second rounds and a 3-point gold star; see the subsequent timing and annotation verification sections. Earlier screenshots are retained as historical design evidence, not as the current rules.
 
 ## Comparison setup
 
@@ -73,5 +73,15 @@ The final full and focused comparisons were opened together after these fixes. N
 - [x] Compared full views and focused typography, controls, and image regions.
 - [x] Checked desktop, laptop, narrow viewport and primary browser flows.
 - [x] Ran gameplay tests, collision stress checks, production build, and packaging tests.
+
+### Browser annotations and 3-point gold star
+
+- Resolved the reported tutorial overlap: dialogs now render outside the arena's isolated stacking context, cover the viewport, and hide the footer slogan while open. The background is inert and cannot scroll; keyboard focus stays inside the dialog. Closing a dialog restores normal scrolling and game controls. Portals remain inside the fullscreen game element.
+- Tutorial step labels are 01 / 02 / 03. The English rules explicitly say P1 taps Shift and P2 taps Enter for a short speed boost, with echo safety and the 2.6-second recharge explanation retained.
+- Gold awards 3 points; small stars still award 1. Pickup type now controls gold size, pulse, particles, sound, collection radius, and respawn independently of its score value. The canvas label and tutorial derive their values from the scoring constants.
+- Inspected `docs/annotation-before.jpg` and `docs/annotation-after.jpg` together. The before capture reproduces the footer painting over the tutorial and the wrapped third step; its captured browser surface is 920 x 594. The final capture is exactly 935 x 604, matching the user's annotated viewport, without resampling. The tutorial fits between y=51.17 and y=552.82, its content needs no scrolling, and the document is exactly 935 x 604. The notebook palette, handwritten hierarchy, and existing artwork are preserved.
+- At 935 x 430, the dialog stays between y=16 and y=414. Keyboard navigation scrolls its overflowing content by 103 pixels while the document stays at scroll position 0. At 390 x 844, the complete tutorial fits between y=103.75 and y=740.25 with no horizontal overflow. Tab / Shift+Tab trapping, Escape dismissal, fullscreen tutorial display, and pause / resume were checked in the browser.
+- Actual gameplay: collecting the center gold star changed P1's HUD from 00 to 03 (`docs/gold-three-points.jpg`). A complete match reached round 5 with eight echoes and then displayed the results dialog inside the viewport, with the footer slogan hidden. Returning to the menu worked. Console errors/warnings: none observed. All 10 gameplay tests passed, including small-star scoring, gold scoring, gold collection range, and its six-second respawn. The production build and packaging preparation passed. Protected Worker files were unchanged, so their baseline tests were not repeated for this change.
+- Two-person keyboard rollover, perceived audio quality, and cross-browser manual regression were not retested.
 
 final result: passed

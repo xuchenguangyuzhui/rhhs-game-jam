@@ -503,25 +503,31 @@ button img {
   animation: paper-shake 0.3s linear 2;
 }
 .dialog-scrim {
-  position: absolute;
-  inset: 1.5%;
+  position: fixed;
+  inset: 0;
   background: #f8f5e9bb;
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
-  padding: 12px;
+  z-index: 100;
+  padding: 16px;
 }
 .paper-dialog {
   width: min(560px, 90%);
   position: relative;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: url("/assets/paper.png") center/500px;
   padding: 32px 48px;
   text-align: center;
   box-shadow: 0 14px 55px #4543341c;
   border: 1px solid #c4c6b99c;
   animation: page-arrive 0.24s ease-out;
+}
+.game-app[data-modal-open="true"] .footer-center {
+  visibility: hidden;
 }
 .dialog-close {
   position: absolute;
@@ -1201,11 +1207,6 @@ button img {
     width: 12px;
     height: 12px;
   }
-  .arena:has(.help-dialog),
-  .arena:has(.pause-dialog),
-  .arena:has(.results-dialog) {
-    z-index: 30;
-  }
   .dialog-scrim {
     position: fixed;
     inset: 0;
@@ -1216,6 +1217,7 @@ button img {
   .help-dialog .paper-dialog,
   .results-dialog .paper-dialog {
     width: min(420px, 100%);
+    max-height: calc(100dvh - 40px);
     padding: 30px 25px;
   }
   .paper-dialog h2,
@@ -1284,6 +1286,40 @@ button img {
     max-width: 95%;
     white-space: normal;
     text-align: center;
+  }
+}
+@media (max-height: 700px) and (min-width: 761px) {
+  .help-dialog .paper-dialog {
+    padding: 20px 32px;
+  }
+  .help-dialog h2 {
+    font-size: 32px;
+    margin: 8px 0;
+  }
+  .help-dialog .paper-dialog > p {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .help-dialog .how-rounds {
+    gap: 9px;
+    margin: 14px 0;
+  }
+  .help-dialog .how-rounds span {
+    font-size: 17px;
+  }
+  .help-dialog .how-rounds small {
+    font-size: 13px;
+  }
+  .help-dialog .rules-note {
+    margin: 10px 0 16px;
+  }
+  .help-dialog .rules-note p {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .help-dialog .brush-button {
+    min-height: 46px;
+    font-size: 19px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

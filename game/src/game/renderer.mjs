@@ -100,9 +100,9 @@ export class GameRenderer {
         text: `+${event.value}`,
         life: 0.85,
         max: 0.85,
-        color: event.value === 5 ? "#a77b08" : COLORS[event.player],
+        color: event.kind === "gold" ? "#a77b08" : COLORS[event.player],
       });
-      const count = this.motion ? (event.value === 5 ? 20 : 10) : 0;
+      const count = this.motion ? (event.kind === "gold" ? 20 : 10) : 0;
       for (let i = 0; i < count; i++) {
         const a = (i / count) * Math.PI * 2;
         this.particles.push({
@@ -112,10 +112,10 @@ export class GameRenderer {
           vy: Math.sin(a) * 150 - 50,
           life: 0.5 + Math.random() * 0.4,
           angle: a,
-          size: event.value === 5 ? 17 : 11,
+          size: event.kind === "gold" ? 17 : 11,
         });
       }
-      if (event.value === 5 && this.motion) this.shake = 2.5;
+      if (event.kind === "gold" && this.motion) this.shake = 2.5;
     }
     if (event.type === "hit") {
       this.labels.push({
@@ -192,9 +192,9 @@ export class GameRenderer {
       const bob = this.motion
         ? Math.sin(this.time * 2.8 + star.id * 1.7) * 3
         : 0;
-      const scale = star.value === 5 ? 105 : 43;
+      const scale = star.kind === "gold" ? 105 : 43;
       const pulse =
-        this.motion && star.value === 5
+        this.motion && star.kind === "gold"
           ? 1 + Math.sin(this.time * 3) * 0.055
           : 1;
       this.sprite(
@@ -205,12 +205,12 @@ export class GameRenderer {
         scale * pulse,
         this.motion ? Math.sin(this.time + star.id) * 0.05 : 0,
       );
-      if (star.value === 5 && !demo) {
+      if (star.kind === "gold" && !demo) {
         ctx.save();
         ctx.font = "700 16px Kalam";
         ctx.textAlign = "center";
         ctx.fillStyle = "#a3801b";
-        ctx.fillText("+5", star.x, star.y + 68);
+        ctx.fillText(`+${star.value}`, star.x, star.y + 68);
         ctx.restore();
       }
     }

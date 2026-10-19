@@ -42,8 +42,15 @@ export class GameAudio {
   play(event) {
     switch (event.type) {
       case "collect":
-        this.tone(event.value === 5 ? 880 : 660, 0.12, "sine", 0.075, 0, 1100);
-        this.tone(event.value === 5 ? 1320 : 990, 0.13, "sine", 0.05, 0.06);
+        this.tone(
+          event.kind === "gold" ? 880 : 660,
+          0.12,
+          "sine",
+          0.075,
+          0,
+          1100,
+        );
+        this.tone(event.kind === "gold" ? 1320 : 990, 0.13, "sine", 0.05, 0.06);
         break;
       case "dash":
         this.tone(180, 0.15, "triangle", 0.045, 0, 700);

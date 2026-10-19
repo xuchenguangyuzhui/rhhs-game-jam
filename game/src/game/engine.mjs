@@ -1,4 +1,5 @@
 export const MATCH_SECONDS = 60;
+export const STAR_POINTS = { normal: 1, gold: 3 };
 const ROUND_SECONDS = 12;
 export const WORLD = {
   width: 1400,
@@ -118,7 +119,8 @@ export class EchoGame {
       id,
       x,
       y,
-      value: 1,
+      kind: "normal",
+      value: STAR_POINTS.normal,
       readyAt: 0,
       active: true,
     }));
@@ -126,7 +128,8 @@ export class EchoGame {
       id: 6,
       x: 700,
       y: 400,
-      value: 5,
+      kind: "gold",
+      value: STAR_POINTS.gold,
       readyAt: 0,
       active: true,
     });
@@ -251,7 +254,7 @@ export class EchoGame {
     }
     for (const star of this.stars) {
       if (!star.active && this.elapsed >= star.readyAt) {
-        if (star.value === 1) {
+        if (star.kind === "normal") {
           const used = this.stars.filter((s) => s.active && s !== star);
           const spots = STAR_SPOTS.filter(
             ([x, y]) => !used.some((s) => Math.hypot(s.x - x, s.y - y) < 30),
@@ -264,7 +267,8 @@ export class EchoGame {
       }
       if (!star.active) continue;
       const contenders = this.players.filter(
-        (p) => p.stun <= 0 && distance(p, star) < (star.value === 5 ? 48 : 34),
+        (p) =>
+          p.stun <= 0 && distance(p, star) < (star.kind === "gold" ? 48 : 34),
       );
       if (contenders.length) {
         contenders.sort(
@@ -276,11 +280,12 @@ export class EchoGame {
         p.score += star.value;
         p.collected += 1;
         star.active = false;
-        star.readyAt = this.elapsed + (star.value === 5 ? 6 : 3);
+        star.readyAt = this.elapsed + (star.kind === "gold" ? 6 : 3);
         this.events.push({
           type: "collect",
           player: p.id,
           value: star.value,
+          kind: star.kind,
           x: star.x,
           y: star.y,
         });
@@ -306,7 +311,8 @@ export class EchoGame {
       this.elapsed = MATCH_SECONDS;
       this.status = "finished";
       this.events.push({ type: "finish", winner: this.winner });
-    } else if (this.roundElapsed >= WORLD.roundSeconds - 0.000001) this.beginRound();
+    } else if (this.roundElapsed >= WORLD.roundSeconds - 0.000001)
+      this.beginRound();
     return this.events;
   }
   get winner() {

@@ -89,7 +89,7 @@ test("arena edges and solid obstacles stop normal movement and dashes", () => {
   assert.ok(game.players[0].x >= 32 + WORLD.radius);
 });
 
-test("ordinary and gold stars score once, disappear, and respawn", () => {
+test("small stars award 1 and gold awards 3, retaining gold pickup range and respawn", () => {
   const game = new EchoGame();
   const star = game.stars[0];
   Object.assign(game.players[0], { x: star.x, y: star.y });
@@ -98,9 +98,12 @@ test("ordinary and gold stars score once, disappear, and respawn", () => {
   assert.equal(star.active, false);
   assert.equal(events.filter((e) => e.type === "collect").length, 1);
   const gold = game.stars.at(-1);
-  Object.assign(game.players[0], { x: gold.x, y: gold.y });
-  game.step(1 / 60);
-  assert.equal(game.players[0].score, 6);
+  Object.assign(game.players[0], { x: gold.x + 40, y: gold.y });
+  const goldEvents = game.step(1 / 60);
+  assert.equal(game.players[0].score, 4);
+  const collection = goldEvents.find((event) => event.type === "collect");
+  assert.equal(collection.value, 3);
+  assert.equal(collection.kind, "gold");
   assert.equal(gold.active, false);
   Object.assign(game.players[0], { x: 350, y: 750 });
   advance(game, 3.1);

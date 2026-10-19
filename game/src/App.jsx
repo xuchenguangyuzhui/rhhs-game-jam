@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   ArrowClockwiseIcon,
   ArrowLeftIcon,
@@ -15,7 +16,13 @@ import {
 } from "@phosphor-icons/react";
 import "@fontsource/kalam/400.css";
 import "@fontsource/kalam/700.css";
-import { EchoGame, referenceScene, WORLD, MATCH_SECONDS } from "./game/engine.mjs";
+import {
+  EchoGame,
+  referenceScene,
+  WORLD,
+  MATCH_SECONDS,
+  STAR_POINTS,
+} from "./game/engine.mjs";
 import { GameRenderer, loadAssets } from "./game/renderer.mjs";
 import { GameAudio } from "./game/audio.mjs";
 
@@ -97,7 +104,7 @@ function Keyboard({ player }) {
   );
 }
 
-function Dialog({ children, label, close, className = "" }) {
+function Dialog({ children, label, close, className = "", container }) {
   const ref = useRef(null);
   useEffect(() => {
     const previous = document.activeElement;
@@ -128,7 +135,7 @@ function Dialog({ children, label, close, className = "" }) {
       previous?.focus?.();
     };
   }, [close]);
-  return (
+  return createPortal(
     <div className={`dialog-scrim ${className}`}>
       <section
         className="paper-dialog"
@@ -148,7 +155,8 @@ function Dialog({ children, label, close, className = "" }) {
         )}
         {children}
       </section>
-    </div>
+    </div>,
+    container || document.body,
   );
 }
 
@@ -425,14 +433,27 @@ export function App() {
     mode === "menu"
       ? "00"
       : String(snapshot.players[id].score).padStart(2, "0");
+  const modalOpen = help || mode === "paused" || mode === "results";
+  useEffect(() => {
+    if (!modalOpen) return;
+    const bodyOverflow = document.body.style.overflow;
+    const rootOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = bodyOverflow;
+      document.documentElement.style.overflow = rootOverflow;
+    };
+  }, [modalOpen]);
 
   return (
     <main
       className={`game-app ${motion ? "" : "reduce-motion"}`}
       ref={shellRef}
       data-mode={mode}
+      data-modal-open={modalOpen}
     >
-      <div className="game-shell">
+      <div className="game-shell" inert={modalOpen ? true : undefined}>
         <header className="game-header">
           <button
             className="brand"
@@ -588,6 +609,7 @@ export function App() {
               label="Match paused"
               close={resume}
               className="pause-dialog"
+              container={shellRef.current}
             >
               <div className="eyebrow">PENCILS DOWN</div>
               <h2>Take a breather.</h2>
@@ -612,7 +634,11 @@ export function App() {
             </Dialog>
           )}
           {mode === "results" && (
-            <Dialog label="Match results" className="results-dialog">
+            <Dialog
+              label="Match results"
+              className="results-dialog"
+              container={shellRef.current}
+            >
               <div className="eyebrow">THAT’S A WRAP</div>
               <div className="winner-portrait">
                 <img
@@ -656,6 +682,7 @@ export function App() {
               label="How to play"
               close={closeHelp}
               className="help-dialog"
+              container={shellRef.current}
             >
               <div className="eyebrow">THE SHORT VERSION</div>
               <h2>
@@ -674,7 +701,8 @@ export function App() {
                   <b>01</b>
                   <span>Make your moves.</span>
                   <small>
-                    First {WORLD.roundSeconds}s: just you, your rival, and the stars.
+                    First {WORLD.roundSeconds}s: just you, your rival, and the
+                    stars.
                   </small>
                 </div>
                 <div>
@@ -683,7 +711,7 @@ export function App() {
                   <small>Two echoes replay your first round.</small>
                 </div>
                 <div>
-                  <b>3–{WORLD.rounds}</b>
+                  <b>03</b>
                   <span>Embrace the chaos.</span>
                   <small>
                     Up to {(WORLD.rounds - 1) * 2} echoes. No room for regrets.
@@ -693,9 +721,13 @@ export function App() {
               <div className="rules-note">
                 <img src={`${assets}star.png`} alt="" />
                 <p>
-                  Small star <b>+1</b> · Gold star <b>+5</b>
+                  Small star <b>+{STAR_POINTS.normal}</b> · Gold star{" "}
+                  <b>+{STAR_POINTS.gold}</b>
                   <br />
                   Hit any echo: <b>−1</b> and a brief stun.
+                  <br />
+                  <b>P1:</b> tap <b>Shift</b> · <b>P2:</b> tap <b>Enter</b> for
+                  a short speed boost.
                   <br />
                   <b>Dash through echoes</b> to stay safe. Recharges in 2.6s.
                 </p>
